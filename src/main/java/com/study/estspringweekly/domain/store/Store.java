@@ -1,12 +1,17 @@
 package com.study.estspringweekly.domain.store;
 
 import com.study.estspringweekly.domain.menu.MenuRequest;
+import com.study.estspringweekly.domain.order.Order;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.Name;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,18 +35,18 @@ public class Store {
 
     private String contact;
 
-    private int revenue;
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
+    private List<Order> orders = new ArrayList<>();
 
     @Builder
     public Store(String name, String address, String contact) {
         this.name = name;
         this.address = address;
         this.contact = contact;
-        this.revenue  = 0;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -50,9 +55,5 @@ public class Store {
         this.address = storeRequest.getAddress();
         this.contact = storeRequest.getContact();
         this.updatedAt = LocalDateTime.now();
-    }
-
-    public void addRevenue(int price) {
-        this.revenue += price;
     }
 }

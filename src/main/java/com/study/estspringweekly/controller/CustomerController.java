@@ -48,6 +48,7 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.createCustomer(customerRequest));
     }
 
+    //고객 수정
     @PutMapping("/{id}")
     public ResponseEntity<CustomerDTO> updateCustomer(
         @PathVariable("id") Long id,
@@ -56,12 +57,13 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.updateCustomer(id, customerRequest));
     }
 
+    //고객 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCustomer(
         @PathVariable("id") Long id
     ) {
         customerService.deleteCustomer(id);
 
-        return ResponseEntity.ok("DELETE SUCCESS");
+        return ResponseEntity.ok("DELETE SUCCESS!");
     }
 }

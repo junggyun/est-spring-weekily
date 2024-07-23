@@ -2,12 +2,15 @@ package com.study.estspringweekly.controller;
 
 import com.study.estspringweekly.domain.store.StoreDTO;
 import com.study.estspringweekly.domain.store.StoreRequest;
+import com.study.estspringweekly.domain.store.StoreRevenueDTO;
+import com.study.estspringweekly.domain.store.StoreRevenueRequest;
 import com.study.estspringweekly.service.StoreService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,6 +41,14 @@ public class StoreController {
         @PathVariable("id") Long id
     ) {
         return ResponseEntity.ok(storeService.getStore(id));
+    }
+
+    //매장별 특정 기간 매출 조회
+    @GetMapping("/revenue")
+    public ResponseEntity<List<StoreRevenueDTO>> getStoresRevenueByPeriod(
+        @RequestBody StoreRevenueRequest request
+    ) {
+        return ResponseEntity.ok(storeService.getStoresRevenueByPeriod(request));
     }
 
     //매장 등록

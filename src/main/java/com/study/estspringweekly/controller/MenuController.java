@@ -35,11 +35,26 @@ public class MenuController {
         return ResponseEntity.ok(menuService.getAllMenu());
     }
 
+    //메뉴 단건 조회
     @GetMapping("/{id}")
     public ResponseEntity<MenuDTO> getMenu(
         @PathVariable("id") Long id
     ) {
         return ResponseEntity.ok(menuService.getMenu(id));
+    }
+
+    //특정 카테고리의 모든 메뉴 조회
+    @GetMapping("/category")
+    public ResponseEntity<List<MenuDTO>> getAllMenuByCategory(
+        @RequestParam(value = "name", required = false) Category category
+    ) {
+        return ResponseEntity.ok(menuService.getAllMenuByCategory(category));
+    }
+
+    //인기 메뉴 TOP3 조회
+    @GetMapping("/popular")
+    public ResponseEntity<List<MenuDTO>> getTop3Menu() {
+        return ResponseEntity.ok(menuService.getTop3Menu());
     }
 
     //메뉴 등록
@@ -66,13 +81,5 @@ public class MenuController {
     ) {
         menuService.deleteMenu(id);
         return ResponseEntity.ok("DELETE SUCCESS!");
-    }
-
-    //특정 카테고리의 모든 메뉴 조회
-    @GetMapping
-    public ResponseEntity<List<MenuDTO>> getAllMenuByCategory(
-        @RequestParam("category") Category category
-    ) {
-        return ResponseEntity.ok(menuService.getAllMenuByCategory(category));
     }
 }

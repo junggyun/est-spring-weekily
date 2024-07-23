@@ -49,32 +49,53 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    private int totalPrice;
+
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime completedAt;
+    private LocalDateTime canceledAt;
 
     @Builder
     public Order(Customer customer, Store store, List<OrderItem> orderItems) {
         this.customer = customer;
-        this.store = store;
+        setStore(store);
         setOrderItems(orderItems);
         this.orderStatus = OrderStatus.RECEIVED;
+        this.totalPrice = 0;
+        if (orderItems != null) {
+            for (OrderItem orderItem : orderItems) {
+                this.totalPrice += orderItem.getMenu().getPrice();
+            }
+        }
         this.createdAt = LocalDateTime.now();
     }
 
     //주문 상태 변경
     public void updateToCompleted() {
+        if (this.completedAt != null) {
+            throw new RuntimeException("이미 완료된 주문입니다.");
+        }
+        if (this.canceledAt != null) {
+            throw new RuntimeException("이미 취소된 주문입니다.");
+        }
         this.orderStatus = OrderStatus.COMPLETED;
-        int totalPrice = 0;
+        this.completedAt = LocalDateTime.now();
         if (orderItems != null) {
             for (OrderItem orderItem : orderItems) {
-                totalPrice += orderItem.getMenu().getPrice();
+                orderItem.getMenu().increaseSalesCount();
             }
         }
-        this.getStore().addRevenue(totalPrice);
     }
 
     public void updateToCanceled() {
+        if (this.completedAt != null) {
+            throw new RuntimeException("이미 완료된 주문입니다.");
+        }
+        if (this.canceledAt != null) {
+            throw new RuntimeException("이미 취소된 주문입니다.");
+        }
         this.orderStatus = OrderStatus.CANCELED;
+        this.canceledAt = LocalDateTime.now();
     }
 
     //연관관계 메서드
@@ -85,5 +106,10 @@ public class Order {
                 orderItem.setOrder(this);
             }
         }
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+        store.getOrders().add(this);
     }
 }

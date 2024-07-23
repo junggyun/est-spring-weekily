@@ -8,4 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     List<Menu> findByCategory(Category category);
+
+    List<Menu> findTop3ByOrderBySalesCountDescPriceDesc();
+
 }

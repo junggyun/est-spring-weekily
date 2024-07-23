@@ -35,6 +35,8 @@ public class Menu {
 
     private String info;
 
+    private int salesCount;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -45,6 +47,7 @@ public class Menu {
         this.category = category;
         this.price = price;
         this.info = info;
+        this.salesCount = 0;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -55,5 +58,9 @@ public class Menu {
         this.price = menuRequest.getPrice();
         this.info = menuRequest.getInfo();
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void increaseSalesCount() {
+        this.salesCount += 1;
     }
 }

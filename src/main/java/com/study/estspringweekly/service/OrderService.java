@@ -15,6 +15,7 @@ import com.study.estspringweekly.repository.OrderRepository;
 import com.study.estspringweekly.repository.StoreRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,21 @@ public class OrderService {
         this.storeRepository = storeRepository;
         this.menuRepository = menuRepository;
         this.orderItemRepository = orderItemRepository;
+    }
+
+    //주문 단건 조회
+    public OrderDTO getOrder(Long id) {
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("해당 주문을 찾을 수 없습니다."));
+
+        return new OrderDTO(order);
+    }
+
+    //주문 전체 조회
+    public List<OrderDTO> getAllOrders() {
+        return orderRepository.findAll().stream()
+            .map(OrderDTO::new)
+            .collect(Collectors.toList());
     }
 
     //주문 등록
@@ -69,8 +85,19 @@ public class OrderService {
         return new OrderDTO(order);
     }
 
-    //주문 수정
-    public OrderDTO updateOrder(OrderRequest orderRequest) {
+    //주문 취소
+    @Transactional
+    public void cancelOrder(Long id) {
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("해당 주문을 찾을 수 없습니다."));
+        order.updateToCanceled();
+    }
 
+    //주문 완료
+    @Transactional
+    public void completeOrder(Long id) {
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("해당 주문을 찾을 수 없습니다."));
+        order.updateToCompleted();
     }
 }

@@ -13,6 +13,7 @@ public class MenuDTO {
     private Category category;
     private int price;
     private String info;
+    private int salesCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -22,6 +23,7 @@ public class MenuDTO {
         this.category = menu.getCategory();
         this.price = menu.getPrice();
         this.info = menu.getInfo();
+        this.salesCount = menu.getSalesCount();
         this.createdAt = menu.getCreatedAt();
         this.updatedAt = menu.getUpdatedAt();
     }

@@ -37,6 +37,20 @@ public class MenuService {
             .collect(Collectors.toList());
     }
 
+    //특정 카테고리의 모든 메뉴 조회
+    public List<MenuDTO> getAllMenuByCategory(Category category) {
+        return menuRepository.findByCategory(category).stream()
+            .map(MenuDTO::new)
+            .collect(Collectors.toList());
+    }
+
+    //인기 메뉴 TOP3 조회
+    public List<MenuDTO> getTop3Menu() {
+        return menuRepository.findTop3ByOrderBySalesCountDescPriceDesc().stream()
+            .map(MenuDTO::new)
+            .collect(Collectors.toList());
+    }
+
     //메뉴 등록
     @Transactional
     public MenuDTO createMenu(MenuRequest request) {
@@ -67,12 +81,5 @@ public class MenuService {
         Menu menu = menuRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("해당 메뉴를 찾을 수 없습니다."));
         menuRepository.delete(menu);
-    }
-
-    //특정 카테고리의 모든 메뉴 조회
-    public List<MenuDTO> getAllMenuByCategory(Category category) {
-        return menuRepository.findByCategory(category).stream()
-            .map(MenuDTO::new)
-            .collect(Collectors.toList());
     }
 }
