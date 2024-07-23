@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "orders_item")
+@Table(name = "order_item")
 public class OrderItem {
 
     @Id
@@ -29,16 +29,19 @@ public class OrderItem {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orders")
+    @JoinColumn(name = "orders_id")
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu")
+    @JoinColumn(name = "menu_id")
     private Menu menu;
 
     @Builder
-    public OrderItem(Order order, Menu menu) {
-        this.order = order;
+    public OrderItem(Menu menu) {
         this.menu = menu;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

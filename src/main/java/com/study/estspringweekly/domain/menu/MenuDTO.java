@@ -10,7 +10,7 @@ public class MenuDTO {
 
     private Long id;
     private String name;
-    private String category;
+    private Category category;
     private int price;
     private String info;
     private LocalDateTime createdAt;

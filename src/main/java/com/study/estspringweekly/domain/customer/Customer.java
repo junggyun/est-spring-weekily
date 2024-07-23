@@ -41,4 +41,11 @@ public class Customer {
         this.address = address;
         this.createdAt = LocalDateTime.now();
     }
+
+    public void updateCustomer(CustomerRequest customerRequest) {
+        this.name = customerRequest.getName();
+        this.contact = customerRequest.getContact();
+        this.address = customerRequest.getAddress();
+        this.updatedAt = LocalDateTime.now();
+    }
 }

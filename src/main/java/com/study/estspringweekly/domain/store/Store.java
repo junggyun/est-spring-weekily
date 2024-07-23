@@ -1,5 +1,6 @@
 package com.study.estspringweekly.domain.store;
 
+import com.study.estspringweekly.domain.menu.MenuRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,8 @@ public class Store {
 
     private String contact;
 
+    private int revenue;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -38,6 +41,18 @@ public class Store {
         this.name = name;
         this.address = address;
         this.contact = contact;
+        this.revenue  = 0;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void updateStore(StoreRequest storeRequest) {
+        this.name = storeRequest.getName();
+        this.address = storeRequest.getAddress();
+        this.contact = storeRequest.getContact();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void addRevenue(int price) {
+        this.revenue += price;
     }
 }
